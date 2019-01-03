@@ -24,7 +24,6 @@ public class ProductCategory {
     @NonNull
     private String categoryId;
 
-
     @NonNull
     public String getProductId() {
         return productId;

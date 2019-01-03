@@ -4,10 +4,8 @@ import android.app.Application;
 import android.util.Log;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -66,7 +64,7 @@ public class ProductRepository {
 
         if (productWebservice == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(WebserviceConfig.API_URL)
+                    .baseUrl(WebserviceConfig.MY_API_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .build();
