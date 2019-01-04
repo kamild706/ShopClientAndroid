@@ -13,4 +13,9 @@
     <string name="cart">Cart</string>
     <string name="scan_qr_code">Scan QR code</string>
     <string name="products_especially_for_you">Products especially for you</string>
+    <string name="title_activity_category_product">CategoryProduct</string>
+    <string name="title_activity_product_category">ProductCategoryActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

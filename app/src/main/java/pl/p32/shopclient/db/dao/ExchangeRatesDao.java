@@ -5,14 +5,14 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import pl.p32.shopclient.model.Rates;
+import pl.p32.shopclient.model.ExchangeRates;
 
 @Dao
-public interface RatesDao {
+public interface ExchangeRatesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Rates rates);
+    void insert(ExchangeRates exchangeRates);
 
     @Query("SELECT * FROM rates WHERE id = 1")
-    LiveData<Rates> loadRates();
+    LiveData<ExchangeRates> loadRates();
 }

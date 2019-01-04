@@ -4,13 +4,13 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 import pl.p32.shopclient.db.AppDatabase;
-import pl.p32.shopclient.db.dao.RatesDao;
-import pl.p32.shopclient.model.Rates;
+import pl.p32.shopclient.db.dao.ExchangeRatesDao;
+import pl.p32.shopclient.model.ExchangeRates;
 
 public class ExchangeRatesRepository {
 
     private static ExchangeRatesRepository instance;
-    private RatesDao ratesDao;
+    private ExchangeRatesDao exchangeRatesDao;
 
     public static ExchangeRatesRepository getInstance(Application application) {
         if (instance == null) {
@@ -25,10 +25,10 @@ public class ExchangeRatesRepository {
 
     private ExchangeRatesRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
-        ratesDao = database.exchangeRatesDao();
+        exchangeRatesDao = database.exchangeRatesDao();
     }
 
-    public LiveData<Rates> getExchangeRates() {
-        return ratesDao.loadRates();
+    public LiveData<ExchangeRates> getExchangeRates() {
+        return exchangeRatesDao.loadRates();
     }
 }

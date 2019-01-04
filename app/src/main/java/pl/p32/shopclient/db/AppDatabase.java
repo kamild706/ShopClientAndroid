@@ -1,7 +1,6 @@
 package pl.p32.shopclient.db;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.io.IOException;
@@ -15,14 +14,14 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import pl.p32.shopclient.db.dao.CategoryDao;
+import pl.p32.shopclient.db.dao.ExchangeRatesDao;
 import pl.p32.shopclient.db.dao.ProductCategoryDao;
 import pl.p32.shopclient.db.dao.ProductDao;
-import pl.p32.shopclient.db.dao.RatesDao;
 import pl.p32.shopclient.model.Category;
 import pl.p32.shopclient.model.ExchangeRates;
+import pl.p32.shopclient.model.ExchangeRatesWrapper;
 import pl.p32.shopclient.model.Product;
 import pl.p32.shopclient.model.ProductCategory;
-import pl.p32.shopclient.model.Rates;
 import pl.p32.shopclient.webservice.CategoryWebservice;
 import pl.p32.shopclient.webservice.ExchangeRatesWebservice;
 import pl.p32.shopclient.webservice.ProductCategoryWebservice;
@@ -33,7 +32,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-@Database(entities = {Product.class, Category.class, ProductCategory.class, Rates.class}, version = 1, exportSchema = false)
+@Database(entities = {Product.class, Category.class, ProductCategory.class, ExchangeRates.class}, version = 1, exportSchema = false)
 @TypeConverters({BigDecimalConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -43,7 +42,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ProductDao productDao();
     public abstract CategoryDao categoryDao();
     public abstract ProductCategoryDao productCategoryDao();
-    public abstract RatesDao exchangeRatesDao();
+    public abstract ExchangeRatesDao exchangeRatesDao();
 
     public static AppDatabase getInstance(final Context context) {
         if (instance == null) {
@@ -132,7 +131,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
         ExchangeRatesWebservice exchangeRatesWebservice = retrofit.create(ExchangeRatesWebservice.class);
 
-        Response<ExchangeRates> response;
+        Response<ExchangeRatesWrapper> response;
         try {
             response = exchangeRatesWebservice.getExchangeRates().execute();
         } catch (IOException e) {
@@ -144,10 +143,10 @@ public abstract class AppDatabase extends RoomDatabase {
         Log.d("MYAPP", response.body().toString());
 
         if (response.isSuccessful()) {
-            ExchangeRates exchangeRates = response.body();
+            ExchangeRatesWrapper exchangeRates = response.body();
                 Log.d("MYAPP", response.raw().message());
 
-                Rates rates = exchangeRates.getRates();
+                ExchangeRates rates = exchangeRates.getExchangeRates();
                 Log.d("MYAPP", rates.toString());
                 exchangeRatesDao().insert(rates);
         } else {

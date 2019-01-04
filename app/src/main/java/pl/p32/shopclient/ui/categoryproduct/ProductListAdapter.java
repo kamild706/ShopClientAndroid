@@ -1,4 +1,4 @@
-package pl.p32.shopclient.ui.homepage;
+package pl.p32.shopclient.ui.categoryproduct;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,13 +11,14 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import pl.p32.shopclient.GlideApp;
 import pl.p32.shopclient.R;
 import pl.p32.shopclient.model.Product;
 
-public class ProductsGridAdapter extends RecyclerView.Adapter<ProductsGridAdapter.ProductViewHolder> {
+public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductViewHolder> {
 
     class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -25,7 +26,7 @@ public class ProductsGridAdapter extends RecyclerView.Adapter<ProductsGridAdapte
         private final TextView priceView;
         private final ImageView imageView;
 
-        public ProductViewHolder(@NonNull View itemView) {
+        ProductViewHolder(@NonNull View itemView) {
             super(itemView);
 
             nameView = itemView.findViewById(R.id.product_name);
@@ -45,7 +46,7 @@ public class ProductsGridAdapter extends RecyclerView.Adapter<ProductsGridAdapte
     private Context context;
     private ItemClickListener mClickListener;
 
-    ProductsGridAdapter(Context context) {
+    public ProductListAdapter(Context context) {
         this.context = context;
     }
 
@@ -57,8 +58,8 @@ public class ProductsGridAdapter extends RecyclerView.Adapter<ProductsGridAdapte
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ConstraintLayout item = (ConstraintLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.product_in_grid, parent, false);
+        CardView item = (CardView) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.product_row, parent, false);
 
         return new ProductViewHolder(item);
     }
