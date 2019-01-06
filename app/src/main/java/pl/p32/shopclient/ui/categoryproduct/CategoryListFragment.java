@@ -26,16 +26,14 @@ import pl.p32.shopclient.viewmodel.CategoryProductViewModel;
 public class CategoryListFragment extends Fragment implements CategoryListAdapter.ItemClickListener{
 
     private CategoryProductViewModel model;
-    private RecyclerView mRecyclerView;
     private CategoryListAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private OnCategoryChosenListener callback;
 
-    public static CategoryListFragment newInstance() {
+    static CategoryListFragment newInstance() {
         return new CategoryListFragment();
     }
 
-    public void setOnCategoryChosenListener(OnCategoryChosenListener callback) {
+    void setOnCategoryChosenListener(OnCategoryChosenListener callback) {
         this.callback = callback;
     }
 
@@ -44,14 +42,14 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.category_list_fragment, container, false);
 
-        mRecyclerView = view.findViewById(R.id.category_list);
-
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView mRecyclerView = view.findViewById(R.id.category_list);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new CategoryListAdapter();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setClickListener(this);
+
         return view;
     }
 

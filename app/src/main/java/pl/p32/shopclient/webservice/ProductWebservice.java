@@ -18,6 +18,6 @@ public interface ProductWebservice {
     Call<List<Product>> getProducts();
 
     @Headers("Content-Type: application/json")
-    @PUT("products/{productId}")
+    @PUT("product/{productId}")
     Call<Product> updateProduct(@Path("productId") String productId, @Body JsonObject body);
 }

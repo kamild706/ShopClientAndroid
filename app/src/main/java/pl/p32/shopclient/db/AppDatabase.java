@@ -13,10 +13,12 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+import pl.p32.shopclient.db.dao.CartItemDao;
 import pl.p32.shopclient.db.dao.CategoryDao;
 import pl.p32.shopclient.db.dao.ExchangeRatesDao;
 import pl.p32.shopclient.db.dao.ProductCategoryDao;
 import pl.p32.shopclient.db.dao.ProductDao;
+import pl.p32.shopclient.model.CartItem;
 import pl.p32.shopclient.model.Category;
 import pl.p32.shopclient.model.ExchangeRates;
 import pl.p32.shopclient.model.ExchangeRatesWrapper;
@@ -32,7 +34,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-@Database(entities = {Product.class, Category.class, ProductCategory.class, ExchangeRates.class}, version = 1, exportSchema = false)
+@Database(entities = {Product.class, Category.class, ProductCategory.class, ExchangeRates.class,
+        CartItem.class}, version = 1, exportSchema = false)
 @TypeConverters({BigDecimalConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -40,9 +43,14 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "app-database";
 
     public abstract ProductDao productDao();
+
     public abstract CategoryDao categoryDao();
+
     public abstract ProductCategoryDao productCategoryDao();
+
     public abstract ExchangeRatesDao exchangeRatesDao();
+
+    public abstract CartItemDao cartItemDao();
 
     public static AppDatabase getInstance(final Context context) {
         if (instance == null) {
@@ -144,11 +152,11 @@ public abstract class AppDatabase extends RoomDatabase {
 
         if (response.isSuccessful()) {
             ExchangeRatesWrapper exchangeRates = response.body();
-                Log.d("MYAPP", response.raw().message());
+            Log.d("MYAPP", response.raw().message());
 
-                ExchangeRates rates = exchangeRates.getExchangeRates();
-                Log.d("MYAPP", rates.toString());
-                exchangeRatesDao().insert(rates);
+            ExchangeRates rates = exchangeRates.getExchangeRates();
+            Log.d("MYAPP", rates.toString());
+            exchangeRatesDao().insert(rates);
         } else {
             try {
                 Log.d("MYAPP", response.errorBody().string());

@@ -14,51 +14,62 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import pl.p32.shopclient.R;
+import pl.p32.shopclient.model.Product;
+import pl.p32.shopclient.ui.barcode.BarcodeActivity;
+import pl.p32.shopclient.ui.cart.CartActivity;
 import pl.p32.shopclient.ui.categoryproduct.CategoryProductActivity;
+import pl.p32.shopclient.ui.productdetails.ProductDetailsActivity;
 import pl.p32.shopclient.viewmodel.HomepageViewModel;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 public class HomepageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ProductsGridAdapter.ItemClickListener {
 
-    private RecyclerView mRecyclerView;
     private ProductsGridAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
-    private HomepageViewModel model;
+    private HomepageViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
+
+        setupToolbar();
+        setupNavigation();
+        setupRecyclerView();
+
+        mViewModel = ViewModelProviders.of(this).get(HomepageViewModel.class);
+        mViewModel.getRandomProducts().observe(this, products -> mAdapter.setProducts(products));
+    }
+
+    private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+    }
 
+    private void setupNavigation() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
 
-        mRecyclerView = findViewById(R.id.products_for_customer);
+    private void setupRecyclerView() {
+        RecyclerView mRecyclerView = findViewById(R.id.products_for_customer);
         mRecyclerView.setNestedScrollingEnabled(false);
 
-        mLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new ProductsGridAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setClickListener(this);
-
-        model = ViewModelProviders.of(this).get(HomepageViewModel.class);
-        model.getRandomProducts().observe(this, products -> mAdapter.setProducts(products));
     }
 
     @Override
@@ -73,16 +84,12 @@ public class HomepageActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.homepage_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -96,7 +103,6 @@ public class HomepageActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_main) {
@@ -105,9 +111,11 @@ public class HomepageActivity extends AppCompatActivity
             Intent intent = new Intent(this, CategoryProductActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_cart) {
-
+            Intent intent = new Intent(this, CartActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_qr_scan) {
-
+            Intent intent = new Intent(this, BarcodeActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -121,6 +129,9 @@ public class HomepageActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, mAdapter.getItem(position).getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ProductDetailsActivity.class);
+        Product product = mAdapter.getItem(position);
+        intent.putExtra(ProductDetailsActivity.PRODUCT_ID, product.getId());
+        startActivity(intent);
     }
 }

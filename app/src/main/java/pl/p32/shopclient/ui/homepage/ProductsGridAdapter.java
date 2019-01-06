@@ -25,7 +25,7 @@ public class ProductsGridAdapter extends RecyclerView.Adapter<ProductsGridAdapte
         private final TextView priceView;
         private final ImageView imageView;
 
-        public ProductViewHolder(@NonNull View itemView) {
+        ProductViewHolder(@NonNull View itemView) {
             super(itemView);
 
             nameView = itemView.findViewById(R.id.product_name);
@@ -80,11 +80,11 @@ public class ProductsGridAdapter extends RecyclerView.Adapter<ProductsGridAdapte
         return products.size();
     }
 
-    public Product getItem(int position) {
+    Product getItem(int position) {
         return products.get(position);
     }
 
-    public void setClickListener(ItemClickListener mClickListener) {
+    void setClickListener(ItemClickListener mClickListener) {
         this.mClickListener = mClickListener;
     }
 

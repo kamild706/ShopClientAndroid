@@ -1,5 +1,6 @@
 package pl.p32.shopclient.ui.categoryproduct;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,15 +16,15 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import pl.p32.shopclient.R;
+import pl.p32.shopclient.ui.productdetails.ProductDetailsActivity;
 import pl.p32.shopclient.viewmodel.CategoryProductViewModel;
 
 public class ProductListFragment extends Fragment implements ProductListAdapter.ItemClickListener {
 
     private CategoryProductViewModel model;
-    private RecyclerView mRecyclerView;
     private ProductListAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    public static ProductListFragment newInstance() {
+
+    static ProductListFragment newInstance() {
         return new ProductListFragment();
     }
 
@@ -32,9 +33,8 @@ public class ProductListFragment extends Fragment implements ProductListAdapter.
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.product_list_fragment, container, false);
 
-        mRecyclerView = view.findViewById(R.id.product_list);
-
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView mRecyclerView = view.findViewById(R.id.product_list);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new ProductListAdapter(getActivity());
@@ -54,7 +54,9 @@ public class ProductListFragment extends Fragment implements ProductListAdapter.
 
     @Override
     public void onItemClick(View view, int position) {
-
+        Intent intent = new Intent(getContext(), ProductDetailsActivity.class);
+        intent.putExtra(ProductDetailsActivity.PRODUCT_ID, mAdapter.getItem(position).getId());
+        startActivity(intent);
     }
 }
 

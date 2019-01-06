@@ -15,7 +15,14 @@
     <string name="products_especially_for_you">Products especially for you</string>
     <string name="title_activity_category_product">CategoryProduct</string>
     <string name="title_activity_product_category">ProductCategoryActivity</string>
+    <string name="product_added_to_cart">Product has been added to the cart</string>
+    <string name="product_already_in_cart">Product is already in the cart</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_product_details">ProductDetailsActivity</string>
+    <string name="title_activity_cart">CartActivity</string>
+    <string name="total_price">Total</string>
+    <string name="checkout_order">Checkout</string>
+    <string name="order_confirmed">We hereby confirm your order</string>
 </resources>

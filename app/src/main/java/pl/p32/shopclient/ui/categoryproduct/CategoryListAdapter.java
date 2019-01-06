@@ -10,7 +10,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import pl.p32.shopclient.R;
 import pl.p32.shopclient.model.Category;
@@ -63,11 +62,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         return categories.size();
     }
 
-    public Category getItem(int position) {
+    Category getItem(int position) {
         return categories.get(position);
     }
 
-    public void setClickListener(ItemClickListener mClickListener) {
+    void setClickListener(ItemClickListener mClickListener) {
         this.mClickListener = mClickListener;
     }
 

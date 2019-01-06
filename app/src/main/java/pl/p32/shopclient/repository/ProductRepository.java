@@ -18,6 +18,8 @@ import pl.p32.shopclient.model.Product;
 import pl.p32.shopclient.utils.ProductConverter;
 import pl.p32.shopclient.webservice.ProductWebservice;
 import pl.p32.shopclient.webservice.WebserviceConfig;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -71,16 +73,26 @@ public class ProductRepository {
             productWebservice = retrofit.create(ProductWebservice.class);
         }
 
-        try {
-            Response<Product> response = productWebservice.updateProduct(product.getId(), gsonObject).execute();
-            if (response.isSuccessful()) {
-                Executors.newSingleThreadExecutor().execute(() -> productDao.update(response.body()));
-            } else {
-                Log.d("MYAPP", response.errorBody().string());
+        productWebservice.updateProduct(product.getId(), gsonObject).enqueue(new Callback<Product>() {
+            @Override
+            public void onResponse(Call<Product> call, Response<Product> response) {
+                if (response.isSuccessful()) {
+                    Executors.newSingleThreadExecutor().execute(() -> productDao.update(response.body()));
+                } else {
+                    try {
+                        Log.d("MYAPP", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.d("MYAPP", "Error during product update");
+                    }
+                }
             }
-        } catch (IOException e) {
-            Log.d("MYAPP", "Error during product update");
-            e.printStackTrace();
-        }
+
+            @Override
+            public void onFailure(Call<Product> call, Throwable t) {
+                t.printStackTrace();
+                Log.d("MYAPP", "Error during product update");
+            }
+        });
     }
 }
