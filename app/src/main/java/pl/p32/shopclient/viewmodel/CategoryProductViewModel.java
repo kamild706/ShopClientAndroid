@@ -35,7 +35,6 @@ public class CategoryProductViewModel extends AndroidViewModel {
         });
     }
 
-
     public LiveData<List<Product>> getProducts() {
         return products;
     }
@@ -49,7 +48,7 @@ public class CategoryProductViewModel extends AndroidViewModel {
         chosenCategory.setValue(category);
     }
 
-    public MutableLiveData<Category> getChosenCategory() {
+    public LiveData<Category> getChosenCategory() {
         return chosenCategory;
     }
 }

@@ -29,7 +29,6 @@ public class HomepageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ProductsGridAdapter.ItemClickListener {
 
     private ProductsGridAdapter mAdapter;
-
     private HomepageViewModel mViewModel;
 
     @Override

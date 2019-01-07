@@ -54,7 +54,7 @@ public class ProductListFragment extends Fragment implements ProductListAdapter.
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(getContext(), ProductDetailsActivity.class);
+        Intent intent = new Intent(getActivity(), ProductDetailsActivity.class);
         intent.putExtra(ProductDetailsActivity.PRODUCT_ID, mAdapter.getItem(position).getId());
         startActivity(intent);
     }

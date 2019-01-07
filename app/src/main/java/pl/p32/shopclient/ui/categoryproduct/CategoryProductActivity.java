@@ -12,11 +12,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 import pl.p32.shopclient.R;
 import pl.p32.shopclient.model.Category;
+import pl.p32.shopclient.viewmodel.CategoryProductViewModel;
 
 public class CategoryProductActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, CategoryListFragment.OnCategoryChosenListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
+
+    private CategoryProductViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +30,10 @@ public class CategoryProductActivity extends AppCompatActivity
         setupToolbar();
         setupNavigation();
         setupNavigation();
-
         setupFragments();
+
+        mViewModel = ViewModelProviders.of(this).get(CategoryProductViewModel.class);
+        mViewModel.getChosenCategory().observe(this, this::onCategoryChosen);
     }
 
     private void setupToolbar() {
@@ -48,11 +54,8 @@ public class CategoryProductActivity extends AppCompatActivity
     }
 
     private void setupFragments() {
-        CategoryListFragment fragment = CategoryListFragment.newInstance();
-        fragment.setOnCategoryChosenListener(this);
-
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.categories_container, fragment)
+                .replace(R.id.categories_container, CategoryListFragment.newInstance())
                 .commitNow();
 
         if (!isPortrait()) {
@@ -104,8 +107,7 @@ public class CategoryProductActivity extends AppCompatActivity
         return getResources().getBoolean(R.bool.is_portrait);
     }
 
-    @Override
-    public void onCategoryChosen(Category category) {
+    private void onCategoryChosen(Category category) {
         if (isPortrait()) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.categories_container, ProductListFragment.newInstance());
@@ -113,11 +115,6 @@ public class CategoryProductActivity extends AppCompatActivity
             transaction.commit();
         }
 
-        setCategoryTitle(category);
-    }
-
-    @Override
-    public void setCategoryTitle(Category category) {
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(category.getName());
     }
