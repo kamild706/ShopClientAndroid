@@ -37,7 +37,6 @@ public class CartRepository {
 
     public void addToCart(CartItem item) {
         Executors.newSingleThreadExecutor().execute(() -> cartItemDao.insert(item));
-//        cartItemDao.insert(item);
     }
 
     public LiveData<List<CartItemDao.OrderedProduct>> getAllItems() {

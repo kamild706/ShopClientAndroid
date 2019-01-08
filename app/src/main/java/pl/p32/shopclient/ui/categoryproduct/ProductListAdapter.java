@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import pl.p32.shopclient.GlideApp;
 import pl.p32.shopclient.R;
 import pl.p32.shopclient.model.Product;
+import pl.p32.shopclient.utils.CurrencyFormatter;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductViewHolder> {
 
@@ -66,7 +67,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = products.get(position);
-        holder.priceView.setText(product.getPrice().toString());
+
+        CurrencyFormatter formatter = CurrencyFormatter.getInstance();
+        holder.priceView.setText(formatter.getFormattedCurrency(product.getPrice()));
+
         holder.nameView.setText(product.getName());
         GlideApp
                 .with(context)

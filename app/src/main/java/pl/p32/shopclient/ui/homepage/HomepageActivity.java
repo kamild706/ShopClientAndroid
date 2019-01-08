@@ -5,11 +5,13 @@ import android.os.Bundle;
 
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +20,9 @@ import pl.p32.shopclient.model.Product;
 import pl.p32.shopclient.ui.barcode.BarcodeActivity;
 import pl.p32.shopclient.ui.cart.CartActivity;
 import pl.p32.shopclient.ui.categoryproduct.CategoryProductActivity;
+import pl.p32.shopclient.ui.currencypicker.CurrencyDialogFragment;
 import pl.p32.shopclient.ui.productdetails.ProductDetailsActivity;
+import pl.p32.shopclient.utils.CurrencyFormatter;
 import pl.p32.shopclient.viewmodel.HomepageViewModel;
 
 import android.view.Menu;
@@ -35,6 +39,7 @@ public class HomepageActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
+        CurrencyFormatter.getInstance(getApplication());
 
         setupToolbar();
         setupNavigation();
@@ -63,8 +68,10 @@ public class HomepageActivity extends AppCompatActivity
         RecyclerView mRecyclerView = findViewById(R.id.products_for_customer);
         mRecyclerView.setNestedScrollingEnabled(false);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        int columns = getResources().getInteger(R.integer.grid_columns);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, columns);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(columns, 25, false));
 
         mAdapter = new ProductsGridAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
@@ -91,8 +98,11 @@ public class HomepageActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_currency) {
+            FragmentManager fm = getSupportFragmentManager();
+            CurrencyDialogFragment fragment = CurrencyDialogFragment.newInstance();
+            fragment.show(fm, "currency_dialog_fragment");
+            recreate();
             return true;
         }
 
@@ -103,23 +113,20 @@ public class HomepageActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Intent intent = null;
 
         if (id == R.id.nav_main) {
             // we are here
         } else if (id == R.id.nav_categories) {
-            Intent intent = new Intent(this, CategoryProductActivity.class);
-            startActivity(intent);
+            intent = new Intent(this, CategoryProductActivity.class);
         } else if (id == R.id.nav_cart) {
-            Intent intent = new Intent(this, CartActivity.class);
-            startActivity(intent);
+            intent = new Intent(this, CartActivity.class);
         } else if (id == R.id.nav_qr_scan) {
-            Intent intent = new Intent(this, BarcodeActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            intent = new Intent(this, BarcodeActivity.class);
         }
+
+        if (intent != null)
+            startActivity(intent);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

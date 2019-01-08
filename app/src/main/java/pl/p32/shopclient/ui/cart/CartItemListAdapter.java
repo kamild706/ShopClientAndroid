@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import pl.p32.shopclient.GlideApp;
 import pl.p32.shopclient.R;
 import pl.p32.shopclient.db.dao.CartItemDao;
+import pl.p32.shopclient.utils.CurrencyFormatter;
 
 public class CartItemListAdapter extends RecyclerView.Adapter<CartItemListAdapter.CartItemViewHolder> {
 
@@ -47,11 +48,11 @@ public class CartItemListAdapter extends RecyclerView.Adapter<CartItemListAdapte
     private ItemClickListener mClickListener;
     private Context context;
 
-    public CartItemListAdapter(Context context) {
+    CartItemListAdapter(Context context) {
         this.context = context;
     }
 
-    public void setOrderedProducts(List<CartItemDao.OrderedProduct> orderedProducts) {
+    void setOrderedProducts(List<CartItemDao.OrderedProduct> orderedProducts) {
         this.orderedProducts = orderedProducts;
         notifyDataSetChanged();
     }
@@ -69,7 +70,10 @@ public class CartItemListAdapter extends RecyclerView.Adapter<CartItemListAdapte
     public void onBindViewHolder(@NonNull CartItemViewHolder holder, int position) {
         CartItemDao.OrderedProduct product = orderedProducts.get(position);
         holder.nameView.setText(product.name);
-        holder.priceView.setText(String.valueOf(product.price));
+
+        CurrencyFormatter formatter = CurrencyFormatter.getInstance();
+        holder.priceView.setText(formatter.getFormattedCurrency(product.price));
+
         holder.quantityView.setText(String.valueOf(product.quantity));
         GlideApp
                 .with(context)

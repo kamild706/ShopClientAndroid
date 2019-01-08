@@ -2,6 +2,11 @@ package pl.p32.shopclient.repository;
 
 import android.app.Application;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import androidx.lifecycle.LiveData;
 import pl.p32.shopclient.db.AppDatabase;
 import pl.p32.shopclient.db.dao.ExchangeRatesDao;
@@ -28,7 +33,14 @@ public class ExchangeRatesRepository {
         exchangeRatesDao = database.exchangeRatesDao();
     }
 
-    public LiveData<ExchangeRates> getExchangeRates() {
-        return exchangeRatesDao.loadRates();
+    public ExchangeRates getExchangeRates() {
+        Callable<ExchangeRates> callable = () -> exchangeRatesDao.loadRates();
+        Future<ExchangeRates> future = Executors.newSingleThreadExecutor().submit(callable);
+        try {
+            return future.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

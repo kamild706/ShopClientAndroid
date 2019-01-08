@@ -14,5 +14,5 @@ public interface ExchangeRatesDao {
     void insert(ExchangeRates exchangeRates);
 
     @Query("SELECT * FROM rates WHERE id = 1")
-    LiveData<ExchangeRates> loadRates();
+    ExchangeRates loadRates();
 }

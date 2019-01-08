@@ -18,7 +18,7 @@ public class ProductDetailsViewModel extends AndroidViewModel {
     private final ProductRepository repository;
     private final CartRepository cartRepository;
     private LiveData<Product> product;
-    private MutableLiveData<Integer> productQuantity = new MutableLiveData<>(1);
+    private MutableLiveData<Integer> orderQuantity = new MutableLiveData<>(1);
     private final SnackbarMessage mSnackbarText = new SnackbarMessage();
 
     public ProductDetailsViewModel(@NonNull Application application) {
@@ -27,32 +27,34 @@ public class ProductDetailsViewModel extends AndroidViewModel {
         cartRepository = CartRepository.getInstance(application);
     }
 
+    public void init(String productId) {
+        product = repository.getProduct(productId);
+    }
+
     public SnackbarMessage getSnackbarMessage() {
         return mSnackbarText;
     }
 
-    public LiveData<Product> getProduct(String productId) {
-        if (product == null)
-            product = repository.getProduct(productId);
+    public LiveData<Product> getProduct() {
         return product;
     }
 
-    public void incrementProductQuantity() {
-        if (productQuantity.getValue() == null || product.getValue() == null) return;
-        if (productQuantity.getValue() + 1 <= product.getValue().getCardinality()) {
-            productQuantity.setValue(productQuantity.getValue() + 1);
+    public void incrementOrderQuantity() {
+        if (orderQuantity.getValue() == null || product.getValue() == null) return;
+        if (orderQuantity.getValue() + 1 <= product.getValue().getCardinality()) {
+            orderQuantity.setValue(orderQuantity.getValue() + 1);
         }
     }
 
-    public void decrementProductQuantity() {
-        if (productQuantity.getValue() == null) return;
-        if (productQuantity.getValue() > 1) {
-            productQuantity.setValue(productQuantity.getValue() - 1);
+    public void decrementOrderQuantity() {
+        if (orderQuantity.getValue() == null) return;
+        if (orderQuantity.getValue() > 1) {
+            orderQuantity.setValue(orderQuantity.getValue() - 1);
         }
     }
 
-    public LiveData<Integer> getProductQuantity() {
-        return productQuantity;
+    public LiveData<Integer> getOrderQuantity() {
+        return orderQuantity;
     }
 
     public void addProductToCart() {
@@ -64,7 +66,7 @@ public class ProductDetailsViewModel extends AndroidViewModel {
         } else {
             CartItem item = new CartItem();
             item.setProductId(product.getId());
-            item.setQuantity(productQuantity.getValue());
+            item.setQuantity(orderQuantity.getValue());
 
             cartRepository.addToCart(item);
             mSnackbarText.setValue(R.string.product_added_to_cart);

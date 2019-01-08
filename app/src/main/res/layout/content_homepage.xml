@@ -29,6 +29,9 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/HeaderStyle"
+                android:layout_marginTop="8dp"
+                tools:text="Products especially for you"
                 android:text="@string/products_especially_for_you"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

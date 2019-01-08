@@ -1,5 +1,6 @@
 package pl.p32.shopclient.ui.categoryproduct;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,10 +12,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import pl.p32.shopclient.R;
 import pl.p32.shopclient.model.Category;
+import pl.p32.shopclient.ui.barcode.BarcodeActivity;
+import pl.p32.shopclient.ui.cart.CartActivity;
+import pl.p32.shopclient.ui.currencypicker.CurrencyDialogFragment;
+import pl.p32.shopclient.ui.homepage.HomepageActivity;
 import pl.p32.shopclient.viewmodel.CategoryProductViewModel;
 
 public class CategoryProductActivity extends AppCompatActivity
@@ -85,8 +91,11 @@ public class CategoryProductActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_currency) {
+            FragmentManager fm = getSupportFragmentManager();
+            CurrencyDialogFragment fragment = CurrencyDialogFragment.newInstance();
+            fragment.show(fm, "currency_dialog_fragment");
+            recreate();
             return true;
         }
 
@@ -97,6 +106,20 @@ public class CategoryProductActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Intent intent = null;
+
+        if (id == R.id.nav_main) {
+            intent = new Intent(this, HomepageActivity.class);
+        } else if (id == R.id.nav_categories) {
+            // we are here
+        } else if (id == R.id.nav_cart) {
+            intent = new Intent(this, CartActivity.class);
+        } else if (id == R.id.nav_qr_scan) {
+            intent = new Intent(this, BarcodeActivity.class);
+        }
+
+        if (intent != null)
+            startActivity(intent);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
