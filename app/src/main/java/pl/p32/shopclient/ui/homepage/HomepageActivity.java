@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import pl.p32.shopclient.R;
 import pl.p32.shopclient.model.Product;
+import pl.p32.shopclient.ui.GridSpacingItemDecoration;
 import pl.p32.shopclient.ui.barcode.BarcodeActivity;
 import pl.p32.shopclient.ui.cart.CartActivity;
 import pl.p32.shopclient.ui.categoryproduct.CategoryProductActivity;

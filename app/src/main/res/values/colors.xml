@@ -13,4 +13,6 @@
     <color name="colorButtonBackground">#0070ba</color>
     <color name="colorHeading">#232f3e</color>
     <color name="colorProductBackground">#b7abab</color>
+    <color name="colorCategoryBackground">#787979</color>
+    <color name="colorButtonDisabled">#ccc</color>
 </resources>

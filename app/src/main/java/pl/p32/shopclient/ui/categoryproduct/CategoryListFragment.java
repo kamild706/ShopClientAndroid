@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import pl.p32.shopclient.R;
 import pl.p32.shopclient.model.Category;
+import pl.p32.shopclient.ui.GridSpacingItemDecoration;
 import pl.p32.shopclient.viewmodel.CategoryProductViewModel;
 
 public class CategoryListFragment extends Fragment implements CategoryListAdapter.ItemClickListener{
@@ -36,6 +37,8 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
 
         mAdapter = new CategoryListAdapter();
         mRecyclerView.setAdapter(mAdapter);
+        GridSpacingItemDecoration decoration = new GridSpacingItemDecoration(1, 20, false);
+//        mRecyclerView.addItemDecoration(decoration);
         mAdapter.setClickListener(this);
 
         return view;

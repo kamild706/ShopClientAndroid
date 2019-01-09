@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import pl.p32.shopclient.SnackbarMessage;
 import pl.p32.shopclient.model.CartItem;
 import pl.p32.shopclient.model.Product;

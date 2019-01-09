@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,12 +31,13 @@ public class CartItemListAdapter extends RecyclerView.Adapter<CartItemListAdapte
         CartItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            nameView = itemView.findViewById(R.id.name_view);
-            priceView = itemView.findViewById(R.id.price_view);
-            imageView = itemView.findViewById(R.id.image_view);
-            quantityView = itemView.findViewById(R.id.quantity_view);
+            nameView = itemView.findViewById(R.id.product_name);
+            priceView = itemView.findViewById(R.id.product_total_price);
+            imageView = itemView.findViewById(R.id.product_image);
+            quantityView = itemView.findViewById(R.id.order_quantity);
 
-            itemView.setOnClickListener(this);
+            Button delButton = itemView.findViewById(R.id.del_button);
+            delButton.setOnClickListener(this);
         }
 
         @Override
@@ -74,7 +76,10 @@ public class CartItemListAdapter extends RecyclerView.Adapter<CartItemListAdapte
         CurrencyFormatter formatter = CurrencyFormatter.getInstance();
         holder.priceView.setText(formatter.getFormattedCurrency(product.price));
 
-        holder.quantityView.setText(String.valueOf(product.quantity));
+//        holder.quantityView.setText(String.valueOf(product.quantity));
+        holder.quantityView.setText(context.getResources().getQuantityString(
+                R.plurals.chosen_items, product.quantity, product.quantity));
+
         GlideApp
                 .with(context)
                 .load(product.imageUrl)

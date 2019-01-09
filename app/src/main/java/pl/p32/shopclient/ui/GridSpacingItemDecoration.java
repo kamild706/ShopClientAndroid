@@ -1,4 +1,4 @@
-package pl.p32.shopclient.ui.homepage;
+package pl.p32.shopclient.ui;
 
 import android.graphics.Rect;
 import android.view.View;

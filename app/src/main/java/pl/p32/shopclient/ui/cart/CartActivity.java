@@ -22,6 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import pl.p32.shopclient.R;
 import pl.p32.shopclient.db.dao.CartItemDao;
@@ -65,6 +66,7 @@ public class CartActivity extends AppCompatActivity
     }
 
     private void onItemsReceived(List<CartItemDao.OrderedProduct> items) {
+        proceedButton.setEnabled(items.size() != 0);
         mAdapter.setOrderedProducts(items);
     }
 
@@ -77,7 +79,7 @@ public class CartActivity extends AppCompatActivity
         RecyclerView mRecyclerView = findViewById(R.id.cart_list);
         mRecyclerView.setNestedScrollingEnabled(false);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new CartItemListAdapter(this);

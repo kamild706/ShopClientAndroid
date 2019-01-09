@@ -1,5 +1,6 @@
 package pl.p32.shopclient.ui.barcode;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,10 +11,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.SparseArray;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -27,15 +27,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import pl.p32.shopclient.BuildConfig;
 import pl.p32.shopclient.R;
 import pl.p32.shopclient.ui.cart.CartActivity;
 import pl.p32.shopclient.ui.categoryproduct.CategoryProductActivity;
-import pl.p32.shopclient.ui.currencypicker.CurrencyDialogFragment;
 import pl.p32.shopclient.ui.homepage.HomepageActivity;
 import pl.p32.shopclient.ui.productdetails.ProductDetailsActivity;
 
@@ -43,7 +43,8 @@ public class BarcodeActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
     private static final int PHOTO_REQUEST = 10;
-    private TextView scanResults;
+    public static final String ERROR_TEXT_VIEW = "ERROR_TEXT_VIEW";
+    private TextView errorTextView;
     private BarcodeDetector detector;
     private Uri imageUri;
     private static final int REQUEST_WRITE_PERMISSION = 20;
@@ -53,27 +54,42 @@ public class BarcodeActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barcode);
 
+        errorTextView = findViewById(R.id.error_tv);
+        if (savedInstanceState != null) {
+            String previousError = savedInstanceState.getString(ERROR_TEXT_VIEW);
+            errorTextView.setText(previousError);
+        }
+
         setupToolbar();
         setupNavigation();
-       /* Button button = (Button) findViewById(R.id.button);
-        scanResults = (TextView) findViewById(R.id.scan_results);
+        setupBarcodeDetector();
 
-        button.setOnClickListener(view -> {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                takePicture();
-            } else {
-                ActivityCompat.requestPermissions(this, new
-                        String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
-            }
-        });*/
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(view -> handleButtonClick());
+    }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ERROR_TEXT_VIEW, errorTextView.getText().toString());
+    }
+
+    private void setupBarcodeDetector() {
         detector = new BarcodeDetector.Builder(getApplicationContext())
                 .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
                 .build();
         if (!detector.isOperational()) {
-            scanResults.setText("Could not set up the detector!");
-            return;
+            errorTextView.setText(getString(R.string.barcode_scanner_unavailable));
+        }
+    }
+
+    private void handleButtonClick() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+            takePicture();
+        } else {
+            ActivityCompat.requestPermissions(this, new
+                    String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
         }
     }
 
@@ -95,13 +111,12 @@ public class BarcodeActivity extends AppCompatActivity implements
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_WRITE_PERMISSION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    takePicture();
-                } else {
-                    Toast.makeText(this, "Permission Denied!", Toast.LENGTH_SHORT).show();
-                }
+        if (requestCode == REQUEST_WRITE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                takePicture();
+            } else {
+                errorTextView.setText(getString(R.string.qr_code_storage_permission_denied));
+            }
         }
     }
 
@@ -121,21 +136,19 @@ public class BarcodeActivity extends AppCompatActivity implements
                 SparseArray<Barcode> barcodes = detector.detect(frame);
 
                 if (barcodes.size() == 0) {
-                    scanResults.setText("Scan Failed: Found nothing to scan");
+                    errorTextView.setText(getString(R.string.qr_code_not_found));
                     return;
                 }
 
                 Barcode code = barcodes.valueAt(0);
-                scanResults.setText(code.displayValue);
-
                 Intent intent = new Intent(this, ProductDetailsActivity.class);
                 intent.putExtra(ProductDetailsActivity.PRODUCT_ID, code.displayValue);
                 startActivity(intent);
             } else {
-                scanResults.setText("Could not set up the detector!");
+                errorTextView.setText(getString(R.string.barcode_scanner_unavailable));
             }
         } catch (FileNotFoundException e) {
-            Toast.makeText(this, "Failed to load Image", Toast.LENGTH_SHORT).show();
+            errorTextView.setText(getString(R.string.captured_picture_not_found));
         }
     }
 
@@ -168,27 +181,6 @@ public class BarcodeActivity extends AppCompatActivity implements
 
         return BitmapFactory.decodeStream(ctx.getContentResolver()
                 .openInputStream(uri), null, bmOptions);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.homepage_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_currency) {
-            FragmentManager fm = getSupportFragmentManager();
-            CurrencyDialogFragment fragment = CurrencyDialogFragment.newInstance();
-            fragment.show(fm, "currency_dialog_fragment");
-            recreate();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

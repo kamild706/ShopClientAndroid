@@ -7,11 +7,13 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import pl.p32.shopclient.R;
+import pl.p32.shopclient.SingleLiveEvent;
 
 public class CurrencyDialogViewModel extends AndroidViewModel {
 
     public static final String CURRENCY = "CURRENCY";
     private SharedPreferences sharedPreferences;
+    private SingleLiveEvent<Void> currencyChanged = new SingleLiveEvent<>();
     private String currency;
 
     public CurrencyDialogViewModel(@NonNull Application application) {
@@ -19,6 +21,10 @@ public class CurrencyDialogViewModel extends AndroidViewModel {
         sharedPreferences = application.getSharedPreferences(
                 application.getString(R.string.preference_currencies), Context.MODE_PRIVATE);
         currency = sharedPreferences.getString(CURRENCY, "PLN");
+    }
+
+    public SingleLiveEvent<Void> isCurrencyChanged() {
+        return currencyChanged;
     }
 
     public String getCurrency() {
@@ -36,11 +42,12 @@ public class CurrencyDialogViewModel extends AndroidViewModel {
             currency = "GBP";
 
         updatePreferences();
+        currencyChanged.call();
     }
 
     private void updatePreferences() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(CURRENCY, currency);
-        editor.apply();
+        editor.commit();
     }
 }

@@ -66,15 +66,21 @@ public class ProductDetailsActivity extends AppCompatActivity
         setupSnackbar();
     }
 
+    private void setOrderButtonEnabled(boolean enabled) {
+        binding.addToCartButton.setEnabled(enabled);
+    }
+
     private void handleProduct(Product product) {
         binding.setProduct(product);
+        setOrderButtonEnabled(product.getCardinality() != 0);
 
         CurrencyFormatter formatter = CurrencyFormatter.getInstance();
         binding.productPrice.setText(formatter.getFormattedCurrency(product.getPrice()));
     }
 
     private void updateOrderQuantity(int quantity) {
-        binding.orderQuantity.setText(String.valueOf(quantity));
+        binding.orderQuantity.setText(getResources().getQuantityString(
+                R.plurals.chosen_items, quantity, quantity));
     }
 
     private void setupSnackbar() {
@@ -92,8 +98,6 @@ public class ProductDetailsActivity extends AppCompatActivity
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setTitle("");
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
     }
 
     private void setupNavigation() {
@@ -175,6 +179,4 @@ public class ProductDetailsActivity extends AppCompatActivity
                 .placeholder(R.drawable.placeholder)
                 .into(imageView);
     }
-
-//    public static void
 }

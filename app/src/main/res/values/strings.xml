@@ -30,4 +30,15 @@
     <string name="action_currency">Currency settings</string>
     <string name="title_activity_barcode">Product scanner</string>
     <string name="available_items">Available items:</string>
+    <string name="qr_code_activity_desc">QR code scanner lets you scan QR code of product. Use this feature if you want to navigate directly to details page of given product</string>
+    <string name="qr_code_button">Scan QR code</string>
+    <string name="barcode_scanner_unavailable">Could not set up the barcode detector. You cannot use the scanner</string>
+    <string name="qr_code_storage_permission_denied">You denied the permission needed to store captured picture.</string>
+    <string name="qr_code_not_found">QR code was not found. Try again.</string>
+    <string name="captured_picture_not_found">Couldn\'t find captured picture. Probably it\'s deleted.</string>
+    <string name="empty_title" />
+    <plurals name="chosen_items">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
 </resources>

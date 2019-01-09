@@ -10,6 +10,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import pl.p32.shopclient.R;
 import pl.p32.shopclient.model.Category;
@@ -45,7 +46,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        CardView item = (CardView) LayoutInflater.from(parent.getContext())
+        ConstraintLayout item = (ConstraintLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.category_row, parent, false);
 
         return new CategoryViewHolder(item);

@@ -1,6 +1,9 @@
 package pl.p32.shopclient.ui.currencypicker;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +12,10 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import pl.p32.shopclient.R;
+import pl.p32.shopclient.SingleLiveEvent;
 import pl.p32.shopclient.viewmodel.CurrencyDialogViewModel;
 
 public class CurrencyDialogFragment extends DialogFragment {
@@ -34,12 +39,24 @@ public class CurrencyDialogFragment extends DialogFragment {
 
         mViewModel = ViewModelProviders.of(this).get(CurrencyDialogViewModel.class);
         radioGroup = view.findViewById(R.id.picker);
+        showCurrency();
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             int id = radioGroup.getCheckedRadioButtonId();
             mViewModel.setCurrency(id);
         });
+        setupCurrencyChangedHandler();
+    }
 
-        showCurrency();
+    private void setupCurrencyChangedHandler() {
+       mViewModel.isCurrencyChanged().observe(this, aVoid -> {
+           Log.d("MYAPP", "Listener called");
+           Activity activity = getActivity();
+           activity.recreate();
+       });
+       /* mViewModel.isCurrencyChanged().observe(this, aVoid -> {
+            Activity activity = getActivity();
+//            activity.recreate();
+        });*/
     }
 
     private void showCurrency() {

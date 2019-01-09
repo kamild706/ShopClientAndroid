@@ -18,6 +18,7 @@ public class CurrencyFormatter {
     private static CurrencyFormatter instance;
     private SharedPreferences preferences;
     private ExchangeRates rates;
+    private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
     public static CurrencyFormatter getInstance(Application context) {
         if (instance == null) {
@@ -39,7 +40,8 @@ public class CurrencyFormatter {
                 context.getString(R.string.preference_currencies), Context.MODE_PRIVATE);
         currency = preferences.getString("CURRENCY", "PLN");
 
-        preferences.registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> onCurrencyChanged());
+        listener = (sharedPreferences, key) -> onCurrencyChanged();
+        preferences.registerOnSharedPreferenceChangeListener(listener);
 
         ExchangeRatesRepository repository = ExchangeRatesRepository.getInstance(context);
         rates = repository.getExchangeRates();
@@ -47,6 +49,7 @@ public class CurrencyFormatter {
 
     private void onCurrencyChanged() {
         currency = preferences.getString("CURRENCY", "PLN");
+        Log.d("MYAPP", "Currency changed");
     }
 
     public String getFormattedCurrency(BigDecimal amount) {
