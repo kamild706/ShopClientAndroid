@@ -1,10 +1,14 @@
 package pl.p32.shopclient.ui.homepage;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,9 +26,11 @@ import pl.p32.shopclient.ui.cart.CartActivity;
 import pl.p32.shopclient.ui.categoryproduct.CategoryProductActivity;
 import pl.p32.shopclient.ui.currencypicker.CurrencyDialogFragment;
 import pl.p32.shopclient.ui.productdetails.ProductDetailsActivity;
+import pl.p32.shopclient.ui.search.SearchActivity;
 import pl.p32.shopclient.utils.CurrencyFormatter;
 import pl.p32.shopclient.viewmodel.HomepageViewModel;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -91,6 +97,12 @@ public class HomepageActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.homepage_menu, menu);
+
+        /*SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        ComponentName cn = new ComponentName(this, SearchActivity.class);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));*/
+
         return true;
     }
 
@@ -104,6 +116,9 @@ public class HomepageActivity extends AppCompatActivity
             fragment.show(fm, "currency_dialog_fragment");
             recreate();
             return true;
+        } else if (id == R.id.action_search) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

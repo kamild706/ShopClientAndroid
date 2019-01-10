@@ -150,7 +150,7 @@
                     android:id="@+id/addToCartButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorButtonBackground"
+                    android:background="@color/color_button_background"
                     android:text="@string/add_to_cart"
                     android:textColor="@color/colorTextPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -29,10 +29,9 @@ public class CategoryProductViewModel extends AndroidViewModel {
         productCategoryRepository = ProductCategoryRepository.getInstance(application);
         categories = categoryRepository.getCategories();
 
-        products = Transformations.switchMap(chosenCategory, (category) -> {
-            Log.d("MYAPP", "CALLED");
-            return productCategoryRepository.getProductsForCategory(category.getId());
-        });
+        products = Transformations.switchMap(chosenCategory, (category) ->
+                productCategoryRepository.getProductsForCategory(category.getId())
+        );
     }
 
     public LiveData<List<Product>> getProducts() {

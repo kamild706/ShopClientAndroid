@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mój Sklep</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="homepage">Strona główna</string>
+    <string name="categories">Kategorie</string>
+    <string name="cart">Koszyk</string>
+    <string name="scan_qr_code">Skaner QR</string>
+    <string name="products_especially_for_you">Produkty specjalnie dla Ciebie</string>
+    <string name="product_added_to_cart">Produkt został dodany do koszyka</string>
+    <string name="product_already_in_cart">Produkt znajduje się już w koszyku</string>
+    <string name="total_price">Kwota</string>
+    <string name="checkout_order">Zakup</string>
+    <string name="order_confirmed">Zamówienie przetworzone</string>
+    <string name="add_to_cart">Dodaj do koszyka</string>
+    <string name="pick_currency">Wybierz walutę</string>
+    <string name="action_currency">Ustawienia waluty</string>
+    <string name="title_activity_barcode">Skaner produktów</string>
+    <string name="available_items">"Dostępnych sztuk: "</string>
+    <string name="qr_code_activity_desc">Skaner kodów QR umożliwia zeskanowanie kodu QR wybranego produktu. W ten sposób możesz natychmiastowo wyświetlić szczegóły danego produktu.</string>
+    <string name="qr_code_button">Skanuj kod QR</string>
+    <string name="barcode_scanner_unavailable">Konfiguracja skanera zakończona niepowodzeniem. Skaner jest niedostępny.</string>
+    <string name="qr_code_storage_permission_denied">Nie nadano uprawnień niezbędnych do odczytu wykonanego skanu.</string>
+    <string name="qr_code_not_found">Nie znaleziono kodu QR. Spróbuj ponownie.</string>
+    <string name="captured_picture_not_found">Nie znaleziono wykonanego zdjęcia. Prawdopodobnie zostało usunięte.</string>
+    <string name="search_for_product">Szukaj produktu</string>
+    <string name="title_activity_search">Szukaj</string>
+    <string name="search">Szukaj</string>
+    <plurals name="chosen_items">
+        <item quantity="one">%d sztuka</item>
+        <item quantity="few">%d sztuki</item>
+        <item quantity="many">%d sztuk</item>
+    </plurals>
+</resources>

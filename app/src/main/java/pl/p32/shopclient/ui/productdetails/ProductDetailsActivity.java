@@ -30,6 +30,7 @@ import pl.p32.shopclient.ui.cart.CartActivity;
 import pl.p32.shopclient.ui.categoryproduct.CategoryProductActivity;
 import pl.p32.shopclient.ui.currencypicker.CurrencyDialogFragment;
 import pl.p32.shopclient.ui.homepage.HomepageActivity;
+import pl.p32.shopclient.ui.search.SearchActivity;
 import pl.p32.shopclient.utils.CurrencyFormatter;
 import pl.p32.shopclient.viewmodel.ProductDetailsViewModel;
 
@@ -95,9 +96,10 @@ public class ProductDetailsActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setTitle("");
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
     }
 
     private void setupNavigation() {
@@ -142,6 +144,12 @@ public class ProductDetailsActivity extends AppCompatActivity
             CurrencyDialogFragment fragment = CurrencyDialogFragment.newInstance();
             fragment.show(fm, "currency_dialog_fragment");
             recreate();
+            return true;
+        } else if (id == R.id.action_search) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+        } else if (id == android.R.id.home) {
+            onBackPressed();
             return true;
         }
 

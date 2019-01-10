@@ -21,6 +21,7 @@ import pl.p32.shopclient.ui.barcode.BarcodeActivity;
 import pl.p32.shopclient.ui.cart.CartActivity;
 import pl.p32.shopclient.ui.currencypicker.CurrencyDialogFragment;
 import pl.p32.shopclient.ui.homepage.HomepageActivity;
+import pl.p32.shopclient.ui.search.SearchActivity;
 import pl.p32.shopclient.viewmodel.CategoryProductViewModel;
 
 public class CategoryProductActivity extends AppCompatActivity
@@ -97,6 +98,9 @@ public class CategoryProductActivity extends AppCompatActivity
             fragment.show(fm, "currency_dialog_fragment");
             recreate();
             return true;
+        } else if (id == R.id.action_search) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

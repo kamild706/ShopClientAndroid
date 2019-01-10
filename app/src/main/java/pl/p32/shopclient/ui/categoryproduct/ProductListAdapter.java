@@ -46,7 +46,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private Context context;
     private ItemClickListener mClickListener;
 
-    ProductListAdapter(Context context) {
+    public ProductListAdapter(Context context) {
         this.context = context;
     }
 
@@ -84,11 +84,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         return products.size();
     }
 
-    Product getItem(int position) {
+    public Product getItem(int position) {
         return products.get(position);
     }
 
-    void setClickListener(ItemClickListener mClickListener) {
+    public void setClickListener(ItemClickListener mClickListener) {
         this.mClickListener = mClickListener;
     }
 

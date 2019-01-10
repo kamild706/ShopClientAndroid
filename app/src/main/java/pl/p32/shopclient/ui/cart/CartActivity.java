@@ -30,6 +30,7 @@ import pl.p32.shopclient.ui.barcode.BarcodeActivity;
 import pl.p32.shopclient.ui.categoryproduct.CategoryProductActivity;
 import pl.p32.shopclient.ui.currencypicker.CurrencyDialogFragment;
 import pl.p32.shopclient.ui.homepage.HomepageActivity;
+import pl.p32.shopclient.ui.search.SearchActivity;
 import pl.p32.shopclient.utils.CurrencyFormatter;
 import pl.p32.shopclient.viewmodel.CartViewModel;
 

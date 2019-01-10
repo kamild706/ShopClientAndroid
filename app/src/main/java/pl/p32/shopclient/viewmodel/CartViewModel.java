@@ -1,6 +1,7 @@
 package pl.p32.shopclient.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -56,6 +57,7 @@ public class CartViewModel extends AndroidViewModel {
         items.forEach(item -> {
             Product product = new Product();
             product.setId(item.id);
+            Log.d("MYAPP_CARDINALITY", String.valueOf(item.cardinality - item.quantity));
             product.setCardinality(item.cardinality - item.quantity);
 
             productRepository.updateProduct(product);

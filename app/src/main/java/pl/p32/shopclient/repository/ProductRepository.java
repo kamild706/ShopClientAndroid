@@ -47,6 +47,11 @@ public class ProductRepository {
         return instance;
     }
 
+    public LiveData<List<Product>> searchForProducts(String query) {
+        query = '%'  + query + '%';
+        return productDao.searchAllProducts(query);
+    }
+
     public LiveData<List<Product>> getProducts() {
         return productDao.loadAllProducts();
     }
